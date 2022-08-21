@@ -3,7 +3,7 @@ import {QueryResponse, RequestFunc, StatusCode} from "../types/req_res";
 import axios, {AxiosError} from "axios";
 import {ILoginResponse} from "./authApi";
 
-export const serverURL = process.env.SERVER_URL
+export const serverURL = process.env.NEXT_PUBLIC_SERVER_URL
 
 export const instanceSSR = axios.create({
     baseURL: serverURL,
@@ -47,19 +47,28 @@ export const fetcherSSR = {
         res: ServerResponse,
         request: RequestFunc): Promise<QueryResponse<T>> {
         try {
-            const {data} = await handleRequest(req, res, request)
-            return [null, data]
+            const response = await handleRequest(req, res, request)
+            return [null, response.data]
         } catch (e) {
             return [e, null]
         }
     },
 
-    get: async function <T>(req: IncomingMessage, res: ServerResponse, url: string) {
+    get: async function <T>(
+        req: IncomingMessage,
+        res: ServerResponse,
+        url: string):
+        Promise<QueryResponse<T>> {
         const getRequestFunc = () => instanceSSR.get<T>(url, {headers: {cookie: req.headers?.cookie || ''}})
-        return fetcherSSR.baseRequest<T>(req, res, getRequestFunc)
+        return await fetcherSSR.baseRequest<T>(req, res, getRequestFunc)
     },
 
-    post: async function <T>(req: IncomingMessage, res: ServerResponse, url: string, payload: unknown) {
+    post: async function <T>(
+        req: IncomingMessage,
+        res: ServerResponse,
+        url: string,
+        payload: unknown
+    ): Promise<QueryResponse<T>> {
         const getRequestFunc = () => instanceSSR.post<T>(url, payload, {headers: {cookie: req?.headers?.cookie || ' '}})
         return fetcherSSR.baseRequest<T>(req, res, getRequestFunc)
     },

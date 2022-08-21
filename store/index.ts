@@ -1,10 +1,9 @@
-import {AnyAction, combineReducers, Dispatch, Store} from "redux";
-import {Context, createWrapper, HYDRATE} from "next-redux-wrapper";
+import {AnyAction, combineReducers} from "redux";
+import {createWrapper, HYDRATE} from "next-redux-wrapper";
 import {ThunkDispatch} from "redux-thunk";
 import eventsReducer from "./slices/events/eventsReducer";
 import {configureStore} from "@reduxjs/toolkit";
 import authReducer from "./slices/auth/authReducer";
-import actionsCreators from "../types/actionsCreators";
 
 
 export const rootReducer = combineReducers( {
@@ -26,17 +25,23 @@ const reducer = (state, action) => {
 };
 
 // create a makeStore function
-const makeStore = (context: Context) => configureStore({ reducer })
+const makeStore = () => configureStore({ reducer })
+export const store = makeStore()
+
+
+
+export type RootStore = ReturnType<typeof makeStore>
+export type RootState = ReturnType<RootStore['getState']>
+export type AppDispatch = typeof store.dispatch
+export type NextThunkDispatch = ThunkDispatch<RootState, void, AnyAction>
 
 // export an assembled wrapper
-export const wrapper = createWrapper<Store<RootState>>(makeStore, {
+export const wrapper = createWrapper<RootStore>(makeStore, {
     debug: true,
-    serializeState: (state) => JSON.stringify(state),
-    deserializeState: (state) => JSON.parse(state),
+    // serializeState: (state) => JSON.stringify(state),
+    // deserializeState: (state) => JSON.parse(state),
 });
 
-export type RootState = ReturnType<typeof rootReducer>
-export type AppDispatch = Dispatch<AllActions> & ThunkDispatch<RootState, void, AllActions>
-export type InferActionsType<T> = T extends {[key: string]: (...args: any[]) => infer U} ? U : never
-export type NextThunkDispatch = ThunkDispatch<RootState, void, AnyAction>
-export type AllActions = InferActionsType<typeof actionsCreators>
+
+// export type InferActionsType<T> = T extends {[key: string]: (...args: any[]) => infer U} ? U : never
+// export type AllActions = InferActionsType<typeof actionsCreators>

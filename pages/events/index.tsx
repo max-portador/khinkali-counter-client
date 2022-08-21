@@ -6,9 +6,11 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import styled from "styled-components";
 import {useRouter} from "next/router";
 import EventsList from "../../components/EventsList/EventsList";
+import {NextPage} from "next";
+import {fetchAndHydrateEvents} from "../../utils/geInitPageEvents";
 
 
-const EventList = () => {
+const EventList: NextPage = () => {
     const {events} = useTypedSelectors(state => state.event)
     const router = useRouter()
 
@@ -41,7 +43,7 @@ const EventList = () => {
             setEventsRendered((prev) => prev + 3)
             setIsFetching(false)
         }
-    }, [isFetching])
+    }, [isFetching, eventsRendered, events.length])
 
     return (
         <MainLayout>
@@ -53,21 +55,8 @@ const EventList = () => {
     );
 };
 
-// export const getServerSideProps = wrapper.getServerSideProps(store => async ({req, res}) => {
-//     const dispatch = store.dispatch as NextThunkDispatch
-//
-//     try {
-//         if (store.getState().event.events.length === 0) {
-//             let events = await eventsAPI.fetchEventsSSR(req, res)
-//             if (events?.length) {
-//                 dispatch(eventsSlice.actions.setEvents(events))
-//             }
-//         }
-//     } catch (e) {
-//         console.log(e?.message)
-//     }
-//     return null
-// })
+EventList.getInitialProps = fetchAndHydrateEvents
+
 
 export default EventList;
 

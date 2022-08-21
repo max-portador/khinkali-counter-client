@@ -5,9 +5,12 @@ export const addMinAmount = (acc: AccType, event: IEvent, i: number, arr: IEvent
     let daysFromPrev = 0
     if (i < arr.length - 1){
         daysFromPrev = daysDiff( arr[i + 1].date, event.date)
+        acc.minAmount = arr[i + 1].amount + 1;
+    } else {
+        acc.minAmount = 1
     }
     let modifiedEvent = {...event, minAmount: acc.minAmount, daysFromPrev}
-    acc.minAmount = event.amount + 1;
+
     acc.events.push(modifiedEvent)
     return acc
 }

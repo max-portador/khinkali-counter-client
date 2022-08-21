@@ -79,10 +79,4 @@ type InnerCircleProps = {
     children?: React.ReactNode,
 }
 
-
-type InnerProps = {
-    i: number,
-    active: number,
-    children?: React.ReactNode,
-    ref: any
-}
+type InnerProps = {  ref: any } & InnerCircleProps

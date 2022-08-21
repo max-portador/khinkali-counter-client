@@ -1,5 +1,5 @@
 import React, {ChangeEvent, FC, useState} from 'react';
-import {Field, Form, Formik} from "formik";
+import {Field, Form, Formik, FormikHelpers} from "formik";
 import {serverURL} from "../../api/baseApi";
 import {Dialog, Grid, LinearProgress, Stack, TextField} from "@mui/material";
 import {LocalizationProvider} from "@mui/x-date-pickers";
@@ -23,9 +23,12 @@ const EditDialog:FC<PropsType> = ({event, isOpen, setIsOpen}) => {
         keyboardDate: "dd.MM.yyyy",
     };
 
-    const submitHandler = async (values: FormValues) => {
+    const submitHandler = async (values: FormValues, {setFieldValue}:FormikHelpers<FormValues>) => {
         let formData = createFormData(values)
 
+        if (values.amount < event.minAmount){
+            setFieldValue('amount', event.minAmount)
+        }
         setIsUpdating(true)
         await updateEvent({formData})
         setIsUpdating(false)
@@ -39,7 +42,8 @@ const EditDialog:FC<PropsType> = ({event, isOpen, setIsOpen}) => {
 
         formData.append('_id', event._id)
         formData.append('date', date);
-        formData.append('amount', String(amount));
+        formData.append('amount', String(amount < event.minAmount ? event.minAmount : amount));
+
         if (typeof image !== 'string'){
             formData.append('image', image)
         }
@@ -86,14 +90,14 @@ const EditDialog:FC<PropsType> = ({event, isOpen, setIsOpen}) => {
                                           alignItems={'center'}
                                     >
                                         <Field name='amount' id='amount'
-                                               label='Количество хинкалей'
+                                               label='Количество хинкалин'
                                                component={TextField}
                                                noWrap={true}
                                                variant="filled"
                                                sx={{width: 227}}
                                                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                                   let val = Number(e.target.value)
-                                                   setFieldValue('amount', val < event.minAmount ? event.minAmount : val)
+                                                   let val = Number.parseInt(e.target.value)
+                                                   setFieldValue('amount',  val)
                                                }}
                                                value={values.amount}
                                                type={'number'}
