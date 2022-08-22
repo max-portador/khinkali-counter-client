@@ -3,7 +3,6 @@ import {QueryResponse, RequestFunc, StatusCode} from "../types/req_res";
 
 
 export const serverURL = process.env.NEXT_PUBLIC_SERVER_URL
-// export const serverURL = process.env.SERVER_URL
 
 export const instance = axios.create({
     baseURL: serverURL,

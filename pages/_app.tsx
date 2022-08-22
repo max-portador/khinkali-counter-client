@@ -16,15 +16,6 @@ WrappedApp.getInitialProps = wrapper.getInitialAppProps(
         const dispatch = store.dispatch as NextThunkDispatch
         const {req, res} = ctx
 
-        // try {
-        //     let events = await eventsAPI.fetchEventsSSR(req, res)
-        //     if (events?.length ) {
-        //         dispatch(eventsSlice.actions.setEvents(events))
-        //     }
-        // } catch (fetchEventError) {
-        //     console.log("Не удалось получить события")
-        // }
-
         try {
             if (!store.getState().auth.user?.name) {
                 const user = await authApi.meSSR(req, res)

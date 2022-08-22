@@ -7,6 +7,7 @@ import {CenteredStack} from "../../pages/events/create";
 const FormTop:FC<PropsType> = ({amount, setAmount, eventDate, setEventDate, setPicture}) => {
 
     const [isOpenURL, setIsOpenURL] = React.useState(false);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = Number(e.target.value)
         setAmount(val < 1 ? 1 : val)
@@ -20,7 +21,7 @@ const FormTop:FC<PropsType> = ({amount, setAmount, eventDate, setEventDate, setP
                 type='number'
                 onChange={handleChange}
                 variant="outlined"
-                label="Количество хинкалей"
+                label="Количество хинкали"
                 color="primary"
             />
 

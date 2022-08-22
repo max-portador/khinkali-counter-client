@@ -11,10 +11,10 @@ import {useTypedSelectors} from "../../hooks/useTypedSelectors";
 
 const CreateEvent = () => {
 
-    const [isPosting, setIsPosting] = useState(false);
     const {createEvent} = useActions();
     const {isAuth} = useTypedSelectors(state => state.auth)
 
+    const [isPosting, setIsPosting] = useState(false);
     const [eventDate, setEventDate] = useState<Date>(new Date());
     const [amount, setAmount] = useState<number>(1)
     const [picture, setPicture] = useState<Blob | null>(null)
