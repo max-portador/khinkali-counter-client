@@ -24,10 +24,13 @@ const COLOR_NORMAL = 'black'
 const StyledListItem = styled((props: ItemPropsType) => {
     return <Stack direction={'column'} {...props} />
 })`
-  margin-right: ${(props => props.i === props.total - 1
-          ? 20
-          : (20 * props.event.daysFromPrev) % props.viewportwidth + 'px')};
-  margin-left: ${(props => props.i === 0 ? '20px' : 0)};
+  margin-left: ${(props => props.i === 0
+          ? 0
+          : 20 * props.event.daysFromPrev < props.viewportwidth
+                  ? 20 * props.event.daysFromPrev + 'px'
+                  : ((20 * props.event.daysFromPrev) % props.viewportwidth + props.viewportwidth * 0.5) + 'px'
+  )};
+  //margin-right: ${(props => props.i === props.total - 1 ? 0 : '20px')};
   z-index: 1;
 `
 const Circle = styled((props: InnerCircleProps) => <Box {...props}/>)`
