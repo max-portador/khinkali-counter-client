@@ -12,7 +12,7 @@ const MainLayout: React.FC<Props> = ({title, description, keywords, children, ma
                 <title>{ title || 'Khinkali Counter' }</title>
                 <meta
                     name='description'
-                    content={['Khinkali Counter, ReactJS', description || ''].join(' ') }/>
+                    content={['Счетчик Хинкали', description || ''].join(' ') }/>
                 <meta
                     name='robots'
                     content='index, follow'/>
