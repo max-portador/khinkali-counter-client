@@ -143,10 +143,11 @@ const StyledButton = styled((props) => <IconButton
 
 
 const HeaderLabel = styled((props) =>
-    <Typography variant="h6" noWrap component="div"{...props}/>)<{ children: string }>`
+    <Typography variant="h5" noWrap component="div"{...props}/>)<{ children: string }>`
   position: fixed;
   left: 50%;
-  transform: translateX(-50%)
+  transform: translateX(-50%);
+  color: #ccc;
 `
 
 interface AppBarProps extends MuiAppBarProps {

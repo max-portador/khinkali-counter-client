@@ -31,8 +31,8 @@ const Timeline: FC<PropsType> = ({active, setActive, events}) => {
         })
     }
     const moveProgressBar = (sh: number) => {
-        let delta = Math.sign(sh) * progressBarWidth
-        let minShift = progressBarWidth - scaleWidth(events.length) - 10
+        let delta = Math.ceil((Math.sign(sh) * progressBarWidth) / (30)) * (30)
+        let minShift = progressBarWidth - scaleWidth(events.length - 1) - 10
         let maxShift = 0
         setX((x) => maxShift - 40 <= x + delta
             ? maxShift
@@ -46,9 +46,11 @@ const Timeline: FC<PropsType> = ({active, setActive, events}) => {
         if (index === 0 || isNaN(index) || progressBarWidth === null) {
             return 1
         }
-        let marginsSum = events.slice(0, index)
+        let marginsSum = events.slice(0, index + 1)
             .reduce((acc, event) => {
-                return (20 * event.daysFromPrev) % progressBarWidth + acc
+                let distInPixels = 20 * event.daysFromPrev
+                if (distInPixels < progressBarWidth) return distInPixels + acc
+                return distInPixels %  progressBarWidth + progressBarWidth * 0.5 + acc
             }, 0)
         return marginsSum + (15 * index) - 7
     }
@@ -70,7 +72,7 @@ const Timeline: FC<PropsType> = ({active, setActive, events}) => {
                         transition: 'transform .3s ease-in'
                     }}>
                         <Scale width={scaleWidth()}/>
-                        <Scale width={scaleWidth(events.length)} style={{
+                        <Scale width={scaleWidth(events.length - 1) + 100 } style={{
                             backgroundColor: 'grey',
                             position: 'fixed',
                             zIndex: -1
@@ -78,18 +80,16 @@ const Timeline: FC<PropsType> = ({active, setActive, events}) => {
                         <ProgressBar ref={progressBarRef}>
                             {
                                 events.map((event, i) => {
-                                    const item = <LineItem key={formatDate(event.date, EditOptions)}
-                                              total={events.length}
-                                              event={event}
-                                              i={i}
-                                              onClick={() => clickHandler(i)}
-                                              viewportwidth={progressBarWidth}
-                                              active={active}
+                                    return <LineItem key={formatDate(event.date, EditOptions)}
+                                                     total={events.length}
+                                                     event={event}
+                                                     i={i}
+                                                     onClick={() => clickHandler(i)}
+                                                     viewportwidth={progressBarWidth}
+                                                     active={active}
                                     >
                                         {formatDate(event.date, EditOptions)}
                                     </LineItem>
-
-                                    return item
                                 })
                             }
                         </ProgressBar>
@@ -133,7 +133,7 @@ const Scale = styled.div<{ width: number }>`
   position: relative;
   top: 8px;
   margin-left: 50px;
-  left: 27px;
+  left: 7px;
   transition: width .3s linear;
   width: ${props => props.width + 'px'};
 `

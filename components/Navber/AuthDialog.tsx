@@ -53,7 +53,6 @@ const AuthDialog = () => {
 
             >
                 <form onSubmit={formik.handleSubmit}>
-
                     <Grid container p={4} gap={1} width={400}
                           direction={'column'}
                           alignItems='center'
@@ -84,32 +83,16 @@ const AuthDialog = () => {
                     </Grid>
                 </form>
             </Dialog>
-
-            <>
                 {
-                    isAuth && <Grid container alignSelf='center' alignItems='center' justifyContent='end'>
-                        <Typography
-                            sx={{
-                                right: 280,
-                                position: 'fixed',
-                                textDecoration: 'hasDunderPages'
-                            }}>
-                            Пользователь {user.name}
-                        </Typography>
+                    isAuth
+                        ? <Grid container alignSelf='center' alignItems='center' justifyContent='end'>
+                            <UserLabel user={user}/>
                         <AuthButton label={'Logout'} onClick={() => {
                             logout({user})
                         }}/>
                     </Grid>
+                    : <AuthButton label={'Login'} onClick={() => { setIsOpen(true)}}/>
                 }
-
-                {
-                    !isAuth && <AuthButton label={'Login'} onClick={() => {
-                        setIsOpen(true)
-                    }
-                    }/>
-                }
-            </>
-
         </>
     )
 };
@@ -132,6 +115,22 @@ const AuthButton = (props) => {
                    }}>
         {props.label}
     </Button>
+}
+
+function UserLabel({user}){
+    return <Typography
+        variant={'h6'}
+        sx={{
+            padding: '2px 10px',
+            borderRadius: 4,
+            backgroundColor: '#ccc',
+            right: 280,
+            position: 'fixed',
+            textDecoration: 'hasDunderPages',
+            color: '#000',
+        }}>
+        👤 {user.name}
+    </Typography>
 }
 
 
