@@ -1,5 +1,4 @@
 import React, {FC} from 'react';
-import Image from 'next/image'
 import styled from "styled-components";
 import {wrap} from "popmotion";
 import {AnimatePresence, motion} from "framer-motion";
@@ -30,16 +29,11 @@ const variants = {
 const ImageGallery: FC<PropsType> = ({active, direction, paginate, events}) => {
 
     const imageIndex = wrap(0, events.length, active)
-
-    const myLoader=({src})=>{
-        return `${serverURL}/${src}`;
-    }
-
     return (<Container>
             <AnimatePresence initial={false} custom={direction}>
-                <motion.div
+                <motion.img
                     key={active}
-
+                    src={ serverURL + '/' + events[imageIndex].imageName}
                     custom={direction}
                     variants={variants}
                     initial='enter'
@@ -51,9 +45,8 @@ const ImageGallery: FC<PropsType> = ({active, direction, paginate, events}) => {
                     }}
                     className={'galleryImage'}
                 >
-                    <NextImage loader={myLoader}
-                               src={events[imageIndex].imageName}/>
-                </motion.div>
+
+                </motion.img>
 
             </AnimatePresence>
 
@@ -105,7 +98,4 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding-right: 20vw;
-`
-const NextImage =styled((props) => <Image priority={true}  layout={'fill'}  {...props}/>)`
-  object-fit: scale-down;
 `
