@@ -78,3 +78,14 @@ code {
   align-items: center;
   cursor: pointer;
 }
+
+
+#open-drawer{
+  background-color: white;
+  margin-right: 16px;
+}
+
+#open-drawer:hover{
+  background-color: grey;
+  color: #fff;
+}

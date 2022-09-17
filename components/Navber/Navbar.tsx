@@ -49,7 +49,7 @@ export default function Navbar() {
             <AppBar position="fixed" open={open}>
                 <Toolbar sx={{backgroundColor: '#333'}}>
 
-                    <StyledButton onClick={handleDrawerOpen} open={open}>
+                    <StyledButton onClick={handleDrawerOpen} open={open} id='open-drawer'>
                         <MenuIcon/>
                     </StyledButton>
                     <HeaderLabel> KHINKALI COUNTER </HeaderLabel>
@@ -127,20 +127,11 @@ const DrawerHeader = styled('div')(({theme}) => ({
 
 const StyledButton = styled((props) => <IconButton
     aria-label="open drawer"
-    edge="end" {...props} />)<{ open: boolean, onClick: Function, children: React.ReactElement }>`
-  background-color: rgba(1, 1, 1, 0);
-  margin-right: 16px;
+    edge="end" {...props} />)<{ open: boolean, onClick: Function, children: React.ReactElement, id: string }>`
   display: ${(props) => props.open ? 'none' : 'inherit'};
-
-  &:hover {
-    background-color: grey !important;
-    color: #fff;
-  }
-
 ,
 
 `
-
 
 const HeaderLabel = styled((props) =>
     <Typography variant="h5" noWrap component="div"{...props}/>)<{ children: string }>`
